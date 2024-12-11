@@ -33,7 +33,7 @@ class EvaluationApp():
         """Load settings from a TOML project file."""
         load_path = filedialog.askopenfilename(
             filetypes=[("TOML files", "*.toml")],
-            initialdir="./projects",
+            initialdir=self.config["saveload_initialdir"],
             title="Load project file..."
         )
         if load_path:
@@ -44,7 +44,7 @@ class EvaluationApp():
         """Save current settings to a TOML project file."""
         save_path = filedialog.asksaveasfilename(
             defaultextension=".toml",
-            initialdir="./projects",
+            initialdir=self.config["saveload_initialdir"],
             filetypes=[("TOML files", "*.toml")],
             title="Save project file..."
         )

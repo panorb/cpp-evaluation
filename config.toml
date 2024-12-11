@@ -2,5 +2,6 @@
 startup_project = "F:/Repositories/cpp-evaluation/projects/manuell_spark_norm.toml"
 trace_initialdir = "C:/Users/panor/Downloads"
 sensor_initialdir = "C:/Users/panor/AppData/Local/Micro-Epsilon/SensorTool/Protocols"
+saveload_initialdir = "./projects"
 background_image_initialdir = "C:/Users/panor/Pictures"
 

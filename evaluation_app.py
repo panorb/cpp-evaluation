@@ -5,6 +5,7 @@ import toml
 from utils.project import Project
 from utils.config import load_config
 from texify import create_image
+from preview_canvas import PreviewCanvas
 
 class EvaluationApp():
     def __init__(self):
@@ -154,10 +155,8 @@ class EvaluationApp():
 
         ttk.Separator(config_frame, orient="horizontal").pack(fill="x", pady=10)
 
-        self.preview_canvas = tk.Canvas(main_frame, bg="red")
+        self.preview_canvas = PreviewCanvas(main_frame, bg="red")
         self.preview_canvas.grid(row=0, column=1, sticky="news")
-        self.preview_canvas.bind("<Configure>", lambda ev: print(f"w|{ev.width} h|{ev.height}"))
-        self.preview_canvas.bind("<B1-Motion>", lambda ev: print(f"x|{ev.x} y|{ev.y}"))
 
     def _update_all(self):
         for updater in self.updaters:

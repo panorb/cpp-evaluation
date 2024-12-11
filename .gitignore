@@ -1,0 +1,13 @@
+__pycache__/
+
+# Project files
+projects/
+
+# Temporary folder for latex generation
+temp/
+
+# Image files for testing
+*.jpeg
+*.jpg
+*.png
+

@@ -155,7 +155,7 @@ class EvaluationApp():
 
         ttk.Separator(config_frame, orient="horizontal").pack(fill="x", pady=10)
 
-        self.preview_canvas = PreviewCanvas(main_frame, bg="red")
+        self.preview_canvas = PreviewCanvas(main_frame) #, bg="red")
         self.preview_canvas.grid(row=0, column=1, sticky="news")
 
     def _update_all(self):
@@ -165,6 +165,4 @@ class EvaluationApp():
 
     def _update_preview(self):
         if create_image():
-            self.preview_img = tk.PhotoImage(file=r".\temp\preview.png")
-            self.preview_canvas.configure(width=self.preview_img.width(), height=self.preview_img.height())
-            self.preview_canvas.create_image((0,0), anchor="nw", image=self.preview_img)
+            self.preview_canvas.reload_preview()

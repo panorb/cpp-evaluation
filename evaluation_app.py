@@ -20,8 +20,10 @@ class EvaluationApp():
         self._init_gui()
 
         # Load default project, if configured
-        if self.config["default_project"]:
-            self.project.load(self.config["default_project"])
+        startup_project_path = self.config["startup_project"]
+
+        if startup_project_path:
+            self.project.load(startup_project_path)
             self._update_all()
 
         self.root.mainloop()

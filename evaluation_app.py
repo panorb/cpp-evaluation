@@ -159,7 +159,6 @@ class EvaluationApp():
         self.preview_canvas.bind("<Configure>", lambda ev: print(f"w|{ev.width} h|{ev.height}"))
         self.preview_canvas.bind("<B1-Motion>", lambda ev: print(f"x|{ev.x} y|{ev.y}"))
 
-
     def _update_all(self):
         for updater in self.updaters:
             updater(0)
@@ -170,9 +169,3 @@ class EvaluationApp():
             self.preview_img = tk.PhotoImage(file=r".\temp\preview.png")
             self.preview_canvas.configure(width=self.preview_img.width(), height=self.preview_img.height())
             self.preview_canvas.create_image((0,0), anchor="nw", image=self.preview_img)
-
-
-    def print_rotation(self, value):
-        print("yay")
-        print(value)
-        print(self.project.path_rotation.get())

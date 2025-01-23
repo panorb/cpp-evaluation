@@ -1,7 +1,7 @@
 \begin{tikzpicture}
 	\node[anchor=south west,inner sep=0] (image) at (0,0) {\includegraphics[width=0.9\textwidth]{some_other_image.jpg}};
-  \begin{scope}[x={(image.south east)},y={(image.north west)}]
-    \draw[red,ultra thick,rounded corners] (0.62,0.65) rectangle (0.78,0.75);
+	\begin{scope}[x={(image.south east)},y={(image.north west)}]
+		\input{generated}
   \end{scope}
 \end{tikzpicture}
 

@@ -4,8 +4,12 @@ from tkinter import ttk
 import toml
 from utils.project import Project
 from utils.config import load_config
+from utils.math import Rect2
+
 from texify import create_image
 from preview_canvas import PreviewCanvas
+
+from scout import get_path
 
 class EvaluationApp():
     def __init__(self):
@@ -21,7 +25,7 @@ class EvaluationApp():
         self._init_gui()
 
         # Load default project, if configured
-        startup_project_path = self.config["startup_project"]
+        startup_project_path = self.config.get("startup_project")
 
         if startup_project_path:
             self.project.load(startup_project_path)
@@ -80,11 +84,11 @@ class EvaluationApp():
 
         ttk.Label(frame, text=f"{display_name}:").grid(row=0, column=0, sticky="e", padx=5)
 
-        value_label = ttk.Label(frame, text=f"{variable.get():+.2f}")
+        value_label = ttk.Label(frame, text=f"{variable.get()}")
         value_label.grid(row=0, column=1, sticky="e", padx=5)
 
-        scale_update = lambda _: value_label.configure(text=f"{variable.get():+.2f}")
-
+        scale_update = lambda _: value_label.configure(text=f"{variable.get()}")
+        
         scale = ttk.Scale(frame, orient="horizontal", variable=variable, command=scale_update)
         self.updaters.append(scale_update)
         scale["from"] = from_
@@ -135,19 +139,21 @@ class EvaluationApp():
         )
         bgimg_frame.pack(fill="x", pady=5)
 
-        # Separator
         ttk.Separator(config_frame, orient="horizontal").pack(fill="x", pady=10)
 
-        # Create rotation widget
-        rotation_frame = self._create_scale_frame(
-            config_frame,
-            "Path rotation",
-            self.project.path_rotation,
-            from_=-90.0,
-            to=90.0
-        )
-        rotation_frame.pack(fill="x", pady=5)
+    #   def _create_scale_frame(self, parent, display_name, variable, from_=0.0, to=0.0):
+        begin_index_frame = self._create_scale_frame(config_frame, "Begin index (sensor)", self.project.begin_index, from_=1800, to=2400)
+        begin_index_frame.pack(fill="x", pady=5)
 
+        ttk.Button(config_frame, text="Show graphs", command=self._show_graphs).pack(anchor="n", fill="x")
+
+        # def _create_scale_frame(self, parent, display_name, variable, from_=0.0, to=0.0):
+        ttk.Separator(config_frame, orient="horizontal").pack(fill="x", pady=10)
+
+        ttk.Checkbutton(config_frame, text="Show mapping rect", variable=self.project.show_mapping_rect, command=lambda: self.preview_canvas.reload_preview(self.project)).pack(anchor="n")
+        ttk.Button(config_frame, text="Reset mapping rect", command=self._reset_mapping_rect).pack(anchor="n", fill="x")
+
+        # Separator
         ttk.Separator(config_frame, orient="horizontal").pack(fill="x", pady=10)
 
         preview_button = ttk.Button(config_frame, text="Update preview", command=self._update_preview)
@@ -155,7 +161,7 @@ class EvaluationApp():
 
         ttk.Separator(config_frame, orient="horizontal").pack(fill="x", pady=10)
 
-        self.preview_canvas = PreviewCanvas(main_frame) #, bg="red")
+        self.preview_canvas = PreviewCanvas(main_frame, self.project) #, bg="red")
         self.preview_canvas.grid(row=0, column=1, sticky="news")
 
     def _update_all(self):
@@ -164,5 +170,14 @@ class EvaluationApp():
         self._update_preview()
 
     def _update_preview(self):
-        if create_image():
-            self.preview_canvas.reload_preview()
+        if create_image(self.project, get_path(self.project)):
+            self.preview_canvas.reload_preview(self.project)
+
+    def _reset_mapping_rect(self):
+        self.project.mapping_rect = Rect2()
+        self.preview_canvas.reload_preview(self.project)
+
+    def _show_graphs(self):
+        print("show graphs")
+        print(self.project.sensor_file.get())
+
